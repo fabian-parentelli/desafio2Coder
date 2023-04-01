@@ -8,18 +8,18 @@ const managerProduct = async () => {
 
     const product = {
 
-        title: "Tortillas",
+        title: "harina",
         description: "fresca",
         price: 120,
         thumbnail: "sin imagen",
-        code: 1217,
+        code: 111,
         stock: 50
     };
 
     await manager.addProduct(product);
 };
 
-// managerProduct();
+managerProduct();
 
 // Busca un producto por su Id y lo muestra
 // manager.getProductById(5);
