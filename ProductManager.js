@@ -9,7 +9,7 @@ export default class ProductManagaer {
     getProducts = async () => {
         try {
 
-            if(fs.existsSync(this.path)) {
+            if (fs.existsSync(this.path)) {
                 const data = await fs.promises.readFile(this.path, "utf-8");
                 const products = JSON.parse(data);
                 return products;
@@ -34,28 +34,28 @@ export default class ProductManagaer {
                 thumbnail: producto.thumbnail,
                 code: producto.code,
                 stock: producto.stock,
-            }; 
+            };
 
-            const {title, description, price, thumbnail, code, stock} = product;
+            const { title, description, price, thumbnail, code, stock } = product;
 
-    
-            if(!title || !description || !price || !thumbnail || !code || !stock) {
+
+            if (!title || !description || !price || !thumbnail || !code || !stock) {
                 console.log("Todos los campos son Obligatorios");
                 return;
             };
-    
+
             const codeExiste = products.find(pro => pro.code === code);
-            if(codeExiste) {
+            if (codeExiste) {
                 console.log("El codigo se encuentra repetido, no se puede agregar el producto");
                 return;
             };
-    
-            if(products.length === 0) {
+
+            if (products.length === 0) {
                 product.id = 1;
             } else {
                 product.id = products[products.length - 1].id + 1;
             };
-    
+
             products.push(product);
             await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
             console.log(products);
@@ -68,53 +68,67 @@ export default class ProductManagaer {
     getProductById = async (id) => {
         try {
             const products = await this.getProducts();
-
             const idBuscado = products.find(producto => producto.id === id);
-            console.log(idBuscado);
-            return idBuscado;
+            
+            if(idBuscado) {
+                console.log(idBuscado);
+                return idBuscado;
+            } else {
+                console.log("Id no encontrado");
+            };
+
         } catch (error) {
             console.log(error);
         };
     };
 
-    updateProduct = async(id, obj) => {
+    updateProduct = async (id, obj) => {
 
-        const products = await this.getProducts();
-        const productoBuscado = products.find(producto => producto.id === id);
+        try {
+            const products = await this.getProducts();
+            const productoBuscado = products.find(producto => producto.id === id);
 
-        const idBuscado = products.findIndex(producto => producto.id === id);
-        products.splice(1,idBuscado);
+            const idBuscado = products.findIndex(producto => producto.id === id);
+            products.splice(1, idBuscado);
 
-        const {title, description, price, thumbnail, code, stock} = obj;
-        
-        if(!title || !description || !price || !thumbnail || !code || !stock) {
-            console.log("Todos los campos son Obligatorios");
-            return;
+            const { title, description, price, thumbnail, code, stock } = obj;
+
+            if (!title || !description || !price || !thumbnail || !code || !stock) {
+                console.log("Todos los campos son Obligatorios");
+                return;
+            };
+
+            const codeExiste = products.find(pro => pro.code === code);
+            
+            if (codeExiste) {
+                console.log("El codigo se encuentra repetido, no se puede agregar el producto");
+                return;
+            };
+
+            const product = { ...productoBuscado, ...obj, ...id };
+
+            products.push(product);
+            await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
+
+            console.log(products);
+        } catch (error) {
+            console.log(error);
         };
-
-        const codeExiste = products.find(pro => pro.code === code);
-        if(codeExiste) {
-            console.log("El codigo se encuentra repetido, no se puede agregar el producto");
-            return;
-        };
-        
-        const product = {...productoBuscado, ...obj, ...id};
-        
-        products.push(product);
-        await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
-        
-        console.log(products);
     };
 
     deleteProduct = async (id) => {
 
-        const products = await this.getProducts();
-        
-        const idBuscado = products.findIndex(producto => producto.id === id);
-        products.splice(1,idBuscado);
+        try {
+            const products = await this.getProducts();
 
-        await fs.promises.unlink(this.path);
-        await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
-        console.log(products);
+            const idBuscado = products.findIndex(producto => producto.id === id);
+            products.splice(1, idBuscado);
+
+            await fs.promises.unlink(this.path);
+            await fs.promises.writeFile(this.path, JSON.stringify(products, null, '\t'));
+            console.log(products);
+        } catch (error) {
+            console.log(error);
+        };
     };
 };

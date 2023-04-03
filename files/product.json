@@ -7,5 +7,14 @@
 		"code": 111,
 		"stock": 50,
 		"id": 1
+	},
+	{
+		"title": "Ciruelas",
+		"description": "fresca",
+		"price": 120,
+		"thumbnail": "sin imagen",
+		"code": 121,
+		"stock": 50,
+		"id": 2
 	}
 ]
