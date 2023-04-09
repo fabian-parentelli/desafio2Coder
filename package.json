@@ -7,7 +7,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabian-parentelli/desafio2Coder.git"
+  },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fabian-parentelli/desafio2Coder/issues"
+  },
+  "homepage": "https://github.com/fabian-parentelli/desafio2Coder#readme"
 }
